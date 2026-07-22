@@ -1,0 +1,21 @@
+{
+  "name": "@apptile/types",
+  "version": "0.2.0",
+  "description": "TypeScript types for Live Layer prop declarations. Each T* alias equates to exactly the value the matching Live Layer control emits — TypeScript sees plain primitives / objects at runtime, no phantom brands. The editor's auto-wire detects props by the type identifier used at the declaration site.",
+  "license": "MIT",
+  "private": false,
+  "main": "src/index.ts",
+  "types": "src/index.ts",
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "default": "./src/index.ts"
+    }
+  },
+  "files": [
+    "src"
+  ],
+  "publishConfig": {
+    "registry": "https://us-central1-npm.pkg.dev/apptile-staging-setup/tile-packet-npm/"
+  }
+}

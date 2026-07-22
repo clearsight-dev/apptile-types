@@ -1,0 +1,51 @@
+# -----------------------------------------------------------------------------
+# Reference cloudbuild.yaml — npm package (tile-packet-*, apptile-types)
+# -----------------------------------------------------------------------------
+# Copy this file into an npm-package repo's root as `cloudbuild.yaml`. The
+# package's `package.json` is expected to declare:
+#
+#   "publishConfig": {
+#     "registry": "https://us-central1-npm.pkg.dev/PROJECT_ID/tile-packet-npm/"
+#   }
+#
+# On `main`: builds → publishes to the `latest` dist-tag, using the version
+#            from package.json (bump before merging).
+# On `scion/*`: publishes to `scion` dist-tag with a `-scion.<sha>` version
+#               suffix so consumers can opt in without disturbing `latest`.
+# -----------------------------------------------------------------------------
+
+steps:
+  - id: build-publish
+    name: node:20.19.4
+    entrypoint: bash
+    args:
+      - -euc
+      - |
+        # Auth to the GAR npm repo — writes a token into ~/.npmrc scoped to
+        # the registry, valid for the duration of this build.
+        npx -y google-artifactregistry-auth
+
+        # Install without running lifecycle scripts (safety), then build.
+        npm ci --no-audit --no-fund --ignore-scripts
+        if npm run | grep -qE '^\s*build\b'; then
+          npm run build
+        fi
+
+        if [[ "${BRANCH_NAME}" == "main" ]]; then
+          # Publish the version currently in package.json to the `latest`
+          # dist-tag. If the version already exists in the registry the
+          # publish 409s — bump the version in a commit before merging.
+          npm publish --tag latest
+        else
+          # Scion: append `-scion.<sha>` to the version and publish under
+          # the `scion` dist-tag so `npm install pkg@scion` picks it up.
+          base=$(node -e "console.log(require('./package.json').version)")
+          scion_version="${base}-scion.${SHORT_SHA}"
+          npm --no-git-tag-version version "$scion_version"
+          npm publish --tag scion
+        fi
+
+timeout: 900s
+options:
+  machineType: E2_STANDARD_4
+  logging: CLOUD_LOGGING_ONLY
