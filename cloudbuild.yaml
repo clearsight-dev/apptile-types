@@ -15,23 +15,29 @@
 # -----------------------------------------------------------------------------
 
 steps:
+  # 1. Grab a short-lived OAuth token from the CB SA and inject it into
+  #    .npmrc under the GAR-npm registry key so `npm publish` in step 2
+  #    can auth against Artifact Registry directly (google-artifactregistry-auth
+  #    was silently writing to the wrong .npmrc).
+  - id: npm-auth
+    name: gcr.io/cloud-builders/gcloud
+    entrypoint: bash
+    args:
+      - -euc
+      - |
+        TOKEN=$$(gcloud auth print-access-token)
+        cat > .npmrc <<NPMRC
+        registry=https://us-central1-npm.pkg.dev/${PROJECT_ID}/tile-packet-npm/
+        //us-central1-npm.pkg.dev/${PROJECT_ID}/tile-packet-npm/:_authToken=$$TOKEN
+        //us-central1-npm.pkg.dev/${PROJECT_ID}/tile-packet-npm/:always-auth=true
+        NPMRC
+
   - id: build-publish
     name: node:20.19.4
     entrypoint: bash
     args:
       - -euc
       - |
-        # Cloud Build sets HOME=/builder/home under the container but that
-        # directory doesn't exist in the node base image. Create both to
-        # cover the case where a nested tool re-derives HOME from CB env.
-        export HOME=/builder/home
-        mkdir -p "$$HOME"
-        # google-artifactregistry-auth reads .npmrc, doesn't create it —
-        # touch so the initial open succeeds.
-        touch "$$HOME/.npmrc"
-        # Auth to the GAR npm repo — writes a token into ~/.npmrc scoped to
-        # the registry, valid for the duration of this build.
-        npx -y google-artifactregistry-auth
 
         # Install without running lifecycle scripts (safety), then build.
         # `npm ci` requires a lockfile; fall back to `npm install` when
@@ -51,11 +57,13 @@ steps:
           # publish 409s — bump the version in a commit before merging.
           npm publish --tag latest
         else
-          # Scion: append `-scion.<sha>` to the version and publish under
-          # the `scion` dist-tag so `npm install pkg@scion` picks it up.
-          base=$(node -e "console.log(require('./package.json').version)")
-          scion_version="${base}-scion.${SHORT_SHA}"
-          npm --no-git-tag-version version "$scion_version"
+          # Scion branches: append `-scion.<sha>` to the version and
+          # publish under the `scion` dist-tag so consumers can opt in
+          # without disturbing `latest`. $$ escapes bash-side vars — CB
+          # expands ${SHORT_SHA} at yaml-parse time.
+          base=$$(node -e "console.log(require('./package.json').version)")
+          scion_version="$${base}-scion.${SHORT_SHA}"
+          npm --no-git-tag-version version "$$scion_version"
           npm publish --tag scion
         fi
 
