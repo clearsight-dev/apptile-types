@@ -34,7 +34,13 @@ steps:
         npx -y google-artifactregistry-auth
 
         # Install without running lifecycle scripts (safety), then build.
-        npm ci --no-audit --no-fund --ignore-scripts
+        # `npm ci` requires a lockfile; fall back to `npm install` when
+        # a repo hasn't committed one yet (fresh packages).
+        if [[ -f package-lock.json || -f npm-shrinkwrap.json ]]; then
+          npm ci --no-audit --no-fund --ignore-scripts
+        else
+          npm install --no-audit --no-fund --ignore-scripts
+        fi
         if npm run | grep -qE '^\s*build\b'; then
           npm run build
         fi
