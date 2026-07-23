@@ -43,22 +43,28 @@ steps:
       - |
 
         # Install without running lifecycle scripts (safety), then build.
-        # `npm ci` requires a lockfile; fall back to `npm install` when
-        # a repo hasn't committed one yet (fresh packages).
+        # `--legacy-peer-deps` matches the local-dev flag used across the
+        # tile-packet-* repos (their peer deps predate npm 7's ERESOLVE).
         if [[ -f package-lock.json || -f npm-shrinkwrap.json ]]; then
-          npm ci --no-audit --no-fund --ignore-scripts
+          npm ci --no-audit --no-fund --ignore-scripts --legacy-peer-deps
         else
-          npm install --no-audit --no-fund --ignore-scripts
+          npm install --no-audit --no-fund --ignore-scripts --legacy-peer-deps
         fi
         if npm run | grep -qE '^\s*build\b'; then
           npm run build
         fi
 
         if [[ "${BRANCH_NAME}" == "main" ]]; then
-          # Publish the version currently in package.json to the `latest`
-          # dist-tag. If the version already exists in the registry the
-          # publish 409s — bump the version in a commit before merging.
-          npm publish --tag latest
+          # Publish the version currently in package.json to `latest`.
+          # A 409 (version already published) is expected on re-runs and
+          # doesn't fail the build — bump the version in a commit when
+          # you want a new release.
+          npm publish --tag latest || {
+            code=$$?
+            npm view --json ".@$$(node -pe 'require(\"./package.json\").version')" >/dev/null 2>&1 \
+              && { echo "→ version already published; skipping (idempotent)"; exit 0; } \
+              || exit $$code
+          }
         else
           # Scion branches: append `-scion.<sha>` to the version and
           # publish under the `scion` dist-tag so consumers can opt in
