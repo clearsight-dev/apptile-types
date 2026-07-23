@@ -26,11 +26,13 @@ steps:
       - -euc
       - |
         TOKEN=$$(gcloud auth print-access-token)
-        # ONLY the auth-token line — no `registry=` default (that would
-        # route every `npm install` dep through GAR-npm and 404). The
-        # publishConfig in package.json is what directs `npm publish` to
-        # GAR-npm; installs continue to use the public registry.
-        cat > .npmrc <<NPMRC
+        # APPEND auth lines to the (possibly committed) .npmrc so any
+        # package-scoped registry overrides in the repo — e.g.
+        # `tile-packet-content:registry=https://us-central1-npm.pkg.dev/...`
+        # for cross-package consumption — survive. `registry=` (default)
+        # is intentionally NOT set: publishConfig in package.json handles
+        # publish, installs stay on the public registry.
+        cat >> .npmrc <<NPMRC
         //us-central1-npm.pkg.dev/${PROJECT_ID}/tile-packet-npm/:_authToken=$$TOKEN
         //us-central1-npm.pkg.dev/${PROJECT_ID}/tile-packet-npm/:always-auth=true
         NPMRC
