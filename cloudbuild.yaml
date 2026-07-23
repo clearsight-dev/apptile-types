@@ -55,16 +55,16 @@ steps:
         fi
 
         if [[ "${BRANCH_NAME}" == "main" ]]; then
-          # Publish the version currently in package.json to `latest`.
-          # A 409 (version already published) is expected on re-runs and
-          # doesn't fail the build — bump the version in a commit when
+          # Idempotent publish: check the registry first so re-firing the
+          # same commit is a no-op. Bump the version in a commit when
           # you want a new release.
-          npm publish --tag latest || {
-            code=$$?
-            npm view --json ".@$$(node -pe 'require(\"./package.json\").version')" >/dev/null 2>&1 \
-              && { echo "→ version already published; skipping (idempotent)"; exit 0; } \
-              || exit $$code
-          }
+          pkg_name=$$(node -p "require('./package.json').name")
+          pkg_ver=$$(node -p "require('./package.json').version")
+          if npm view "$${pkg_name}@$${pkg_ver}" version >/dev/null 2>&1; then
+            echo "→ $${pkg_name}@$${pkg_ver} already published; skipping"
+          else
+            npm publish --tag latest
+          fi
         else
           # Scion branches: append `-scion.<sha>` to the version and
           # publish under the `scion` dist-tag so consumers can opt in
