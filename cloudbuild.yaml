@@ -26,6 +26,9 @@ steps:
         # cover the case where a nested tool re-derives HOME from CB env.
         export HOME=/builder/home
         mkdir -p "$$HOME"
+        # google-artifactregistry-auth reads .npmrc, doesn't create it —
+        # touch so the initial open succeeds.
+        touch "$$HOME/.npmrc"
         # Auth to the GAR npm repo — writes a token into ~/.npmrc scoped to
         # the registry, valid for the duration of this build.
         npx -y google-artifactregistry-auth
