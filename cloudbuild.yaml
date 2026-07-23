@@ -21,10 +21,11 @@ steps:
     args:
       - -euc
       - |
-        # Cloud Build's default HOME is /builder/home but the dir doesn't
-        # always exist in the node image — create it so `.npmrc` writes
-        # succeed.
-        mkdir -p "$${HOME:-/builder/home}"
+        # Cloud Build sets HOME=/builder/home under the container but that
+        # directory doesn't exist in the node base image. Create both to
+        # cover the case where a nested tool re-derives HOME from CB env.
+        export HOME=/builder/home
+        mkdir -p "$$HOME"
         # Auth to the GAR npm repo — writes a token into ~/.npmrc scoped to
         # the registry, valid for the duration of this build.
         npx -y google-artifactregistry-auth
