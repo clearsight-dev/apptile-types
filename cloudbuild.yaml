@@ -55,12 +55,13 @@ steps:
         fi
 
         if [[ "${BRANCH_NAME}" == "main" ]]; then
-          # Idempotent publish: check the registry first so re-firing the
-          # same commit is a no-op. Bump the version in a commit when
-          # you want a new release.
+          # Idempotent publish: query GAR-npm explicitly (npm view without
+          # --registry hits the public registry, which never has our
+          # packages). Bump the version in a commit for a new release.
+          REG="https://us-central1-npm.pkg.dev/${PROJECT_ID}/tile-packet-npm/"
           pkg_name=$$(node -p "require('./package.json').name")
           pkg_ver=$$(node -p "require('./package.json').version")
-          if npm view "$${pkg_name}@$${pkg_ver}" version >/dev/null 2>&1; then
+          if npm view --registry="$$REG" "$${pkg_name}@$${pkg_ver}" version >/dev/null 2>&1; then
             echo "→ $${pkg_name}@$${pkg_ver} already published; skipping"
           else
             npm publish --tag latest
