@@ -47,5 +47,6 @@ steps:
 
 timeout: 900s
 options:
-  machineType: E2_STANDARD_4
+  # Default machine (e2-standard-2) is fine for npm publish — machineType
+  # only accepts N1_HIGHCPU_{8,32} / E2_HIGHCPU_{8,32}; omit for the default.
   logging: CLOUD_LOGGING_ONLY
