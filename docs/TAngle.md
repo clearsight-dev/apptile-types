@@ -10,7 +10,7 @@ Angle in degrees, edited with a rotation dial.
 ## Usage
 
 ```ts
-import type { TAngle } from '@apptile/types';
+import type { TAngle } from '@tiledev/types';
 
 interface Props {
   tilt: TAngle;

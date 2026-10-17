@@ -10,7 +10,7 @@ Asset URI — always a plain URL string, not an RN `{ uri: … }` literal.
 ## Usage
 
 ```ts
-import type { TImage } from '@apptile/types';
+import type { TImage } from '@tiledev/types';
 
 interface Props {
   hero: TImage;

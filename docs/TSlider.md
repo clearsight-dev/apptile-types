@@ -11,7 +11,7 @@ inspector renders a slider with track-drag and typed number input.
 ## Usage
 
 ```ts
-import type { TSlider } from '@apptile/types';
+import type { TSlider } from '@tiledev/types';
 
 interface Props {
   opacity: TSlider;   // usually 0..1

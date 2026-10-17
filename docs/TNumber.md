@@ -10,7 +10,7 @@ Plain numeric value with optional bounds.
 ## Usage
 
 ```ts
-import type { TNumber } from '@apptile/types';
+import type { TNumber } from '@tiledev/types';
 
 interface Props {
   columns: TNumber;

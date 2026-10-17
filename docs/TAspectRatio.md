@@ -11,7 +11,7 @@ Aspect-ratio string like `'16:9'`, `'1:1'`, `'3:4'`.
 ## Usage
 
 ```ts
-import type { TAspectRatio } from '@apptile/types';
+import type { TAspectRatio } from '@tiledev/types';
 
 interface Props {
   ratio: TAspectRatio;

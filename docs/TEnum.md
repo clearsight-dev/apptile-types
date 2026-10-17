@@ -15,7 +15,7 @@ export type TEnum<T extends string> = T;
 ## Usage
 
 ```ts
-import type { TEnum } from '@apptile/types';
+import type { TEnum } from '@tiledev/types';
 
 interface Props {
   size:  TEnum<'sm' | 'md' | 'lg'>;

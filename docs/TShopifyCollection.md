@@ -1,28 +1,37 @@
 # TShopifyCollection
 
-Shopify collection handle — picker backed by the connected store's
-integration API.
+One Shopify collection, kept as its record. **Changed in 0.2.0:** it was the handle; a prop that holds a handle is now [TShopifyCollectionHandle](TShopifyCollectionHandle.md).
 
-- **Runtime value:** `string` (collection handle)
+- **Runtime value:** [`TShopifyResource`](#the-record): `{ id, handle, title, image }`
 - **LL field type:** `shopifyCollection`
-- **Inspector renderer:** `ShopifyCollectionFieldControl` (searchable
-  picker; hits `/api/apps/:appId/integrations`)
-- **Schema affordances:** `disableAdd`
+- **Inspector renderer:** `ShopifyResourcePicker` (collection, record mode)
+
+The picker comes in pairs: `T<Thing>Handle` keeps the handle a screen loads the thing with; `T<Thing>` keeps the record, enough to draw a card without a request. Needs the app's Shopify connection (shop domain and Storefront token). Without one the picker says the store isn't linked.
 
 ## Usage
 
 ```ts
-import type { TShopifyCollection } from '@apptile/types';
+import type { TShopifyCollection } from '@tiledev/types';
 
 interface Props {
-  handle: TShopifyCollection;
-}
-
-export default function CollectionRail({ handle }: Props) {
-  const products = useCollectionProducts(handle);
-  return <FlatList data={products} … />;
+  collection?: TShopifyCollection;
 }
 ```
 
-Requires a Shopify integration to be connected on the app. Without one the
-picker shows a "Connect a Shopify store" hint.
+```tsx
+<Card title={collection?.title} image={collection?.image} />
+```
+
+## The record
+
+```ts
+export interface TShopifyResource {
+  id: string;
+  handle: string;
+  title: string;
+  image?: string | null;
+}
+export interface TShopifyResourceListItem extends TShopifyResource {
+  type: 'product' | 'collection';
+}
+```

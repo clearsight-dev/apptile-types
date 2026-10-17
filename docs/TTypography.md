@@ -30,7 +30,7 @@ export type TTypography = TTypographyValue;
 ## Usage
 
 ```ts
-import type { TTypography } from '@apptile/types';
+import type { TTypography } from '@tiledev/types';
 import { resolveTypography } from '@/core/theme';
 
 interface Props {

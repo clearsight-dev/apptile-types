@@ -13,7 +13,7 @@ The store still holds a plain string — you decide how to render it (e.g.
 ## Usage
 
 ```ts
-import type { TMarkdown } from '@apptile/types';
+import type { TMarkdown } from '@tiledev/types';
 import Markdown from 'react-native-markdown-display';
 
 interface Props {

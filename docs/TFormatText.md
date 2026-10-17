@@ -16,7 +16,7 @@ export type TFormatText<F extends 'phone' | 'email' | 'address'> = string;
 ## Usage
 
 ```ts
-import type { TFormatText } from '@apptile/types';
+import type { TFormatText } from '@tiledev/types';
 
 interface Props {
   supportEmail: TFormatText<'email'>;

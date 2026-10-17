@@ -25,7 +25,7 @@ export type TFlex = TFlexValue;
 ## Usage
 
 ```ts
-import type { TFlex } from '@apptile/types';
+import type { TFlex } from '@tiledev/types';
 
 interface Props {
   layout: TFlex;

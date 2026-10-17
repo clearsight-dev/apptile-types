@@ -16,7 +16,7 @@ export type TList<T> = readonly T[];
 ## Usage
 
 ```ts
-import type { TList, TText, TImage, TDeeplink } from '@apptile/types';
+import type { TList, TText, TImage, TDeeplink } from '@tiledev/types';
 
 interface Slide {
   title: TText;

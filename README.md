@@ -1,4 +1,4 @@
-# @apptile/types
+# @tiledev/types
 
 Type aliases a tile author uses to tell the TilePacket editor which of their
 component's props are Live-Layer-editable. Each `T*` alias equates to exactly
@@ -26,7 +26,7 @@ visual builder's right panel uses for that value shape.
 ```ts
 import type {
   TText, TImage, TColor, TEnum, TSpacing, TShadow,
-} from '@apptile/types';
+} from '@tiledev/types';
 
 interface Props {
   title:   TText;
@@ -70,7 +70,6 @@ LL field it maps to, the inspector renderer used, and a usage example.
 - [TUrl](docs/TUrl.md)                  — absolute URL
 - [TDeeplink](docs/TDeeplink.md)        — deeplink URI
 - [TAspectRatio](docs/TAspectRatio.md)  — ratio picker
-- [TShopifyCollection](docs/TShopifyCollection.md) — Shopify collection handle
 - [TFormatText](docs/TFormatText.md)    — validated text (phone / email / address)
 
 ### Composite fields
@@ -92,6 +91,31 @@ LL field it maps to, the inspector renderer used, and a usage example.
 - [TFlexAlign](docs/TFlexAlign.md)      — single-axis alignment token
 - [TPosition](docs/TPosition.md)        — absolute-position insets
 
+### Shopify content (0.2.0, matching the editor)
+
+One record, or its handle: `T<Thing>Handle` keeps the handle a screen loads
+the thing with; `T<Thing>` keeps the record `{ id, handle, title, image }`.
+
+- [TShopifyCollectionHandle](docs/TShopifyCollectionHandle.md) — a collection's handle
+- [TShopifyCollection](docs/TShopifyCollection.md) — a collection's record (was the handle before 0.2.0)
+- [TShopifyProductHandle](docs/TShopifyProductHandle.md) — a product's handle
+- [TShopifyProduct](docs/TShopifyProduct.md)       — a product's record
+- [TShopifyBlogHandle](docs/TShopifyBlogHandle.md) — a blog's handle
+- [TShopifyBlog](docs/TShopifyBlog.md)             — a blog's record
+- [TShopifyResourceList](docs/TShopifyResourceList.md)   — products and collections, in order
+- [TShopifyProductList](docs/TShopifyProductList.md)     — products, in order
+- [TShopifyCollectionList](docs/TShopifyCollectionList.md) — collections, in order
+
+### More editor controls (0.2.0)
+
+- [TIcon](docs/TIcon.md)                — icon from a searchable grid
+- [TDateTime](docs/TDateTime.md)        — local `YYYY-MM-DDTHH:mm`
+- [TNavigation](docs/TNavigation.md)    — a screen, a route, or a link
+- [TScreen](docs/TScreen.md)            — one of the app's screens
+- [TVideo](docs/TVideo.md)              — Bunny Stream video guid
+- [TVideoCollection](docs/TVideoCollection.md) — shoppable-feed video collection id
+- [TListEditor](docs/TListEditor.md)    — a list the PM authors (same as TList)
+
 ---
 
 ## Notes on the wire path
@@ -104,18 +128,21 @@ LL field it maps to, the inspector renderer used, and a usage example.
 - Auto-wire runs on drop and on delete-cleanup. Editing the file by hand
   and re-saving is fine too; the runtime scanner (`runFilesAstSync.ts`)
   re-scans the file's AST on every tick and re-derives the LL bindings.
-- The `T_TYPE_MAP` registry lives in
-  `autoWireLiveLayer.ts`. Adding a new alias
-  means (a) exporting it here, (b) a `LiveLayerFieldType` entry in
-  `api/liveLayer.ts`, (c) a map entry in
-  `T_TYPE_MAP`, (d) a switch case in `FieldRow.tsx`.
+- The `T_TYPE_MAP` registry lives in tile-web-v2-shopify's
+  `src/ast/readers/typed-props/parse.ts`. Adding a new alias means
+  (a) exporting it here, (b) a `LiveLayerFieldType` entry in
+  `src/ast/contracts/live-layer.types.ts`, (c) a map entry in `T_TYPE_MAP`,
+  (d) its control in `SchemaFieldControl.tsx`. This package and `T_TYPE_MAP`
+  must list the same aliases with the same values (matched 2026-10-18,
+  0.2.0: the editor had 15 aliases this package lacked, and read
+  `TShopifyCollection` as the record while this package said handle).
 
 ---
 
 ## Install
 
 ```bash
-npm install @apptile/types
+npm install @tiledev/types
 ```
 
 Type-only package — no runtime footprint.

@@ -9,7 +9,7 @@ On/off toggle.
 ## Usage
 
 ```ts
-import type { TBoolean } from '@apptile/types';
+import type { TBoolean } from '@tiledev/types';
 
 interface Props {
   showBadge: TBoolean;

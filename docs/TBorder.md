@@ -23,7 +23,7 @@ export type TBorder = TBorderValue;
 ## Usage
 
 ```ts
-import type { TBorder } from '@apptile/types';
+import type { TBorder } from '@tiledev/types';
 
 interface Props {
   border: TBorder;

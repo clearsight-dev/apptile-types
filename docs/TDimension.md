@@ -16,7 +16,7 @@ export type TDimension      = TDimensionValue;
 ## Usage
 
 ```ts
-import type { TDimension } from '@apptile/types';
+import type { TDimension } from '@tiledev/types';
 
 interface Props {
   width:  TDimension;

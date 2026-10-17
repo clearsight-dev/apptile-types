@@ -11,7 +11,7 @@ Single-axis flex alignment token — for props that only need one of
 ## Usage
 
 ```ts
-import type { TFlexAlign } from '@apptile/types';
+import type { TFlexAlign } from '@tiledev/types';
 
 interface Props {
   align: TFlexAlign;

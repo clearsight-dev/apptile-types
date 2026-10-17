@@ -10,7 +10,7 @@ Multi-line plain text — copy blocks, descriptions.
 ## Usage
 
 ```ts
-import type { TTextArea } from '@apptile/types';
+import type { TTextArea } from '@tiledev/types';
 
 interface Props {
   description: TTextArea;

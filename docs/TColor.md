@@ -11,7 +11,7 @@ Colour value — hex, rgb(), or a colour keyword.
 ## Usage
 
 ```ts
-import type { TColor } from '@apptile/types';
+import type { TColor } from '@tiledev/types';
 
 interface Props {
   accent: TColor;

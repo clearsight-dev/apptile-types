@@ -19,7 +19,7 @@ export type TTransform = TTransformValue;
 ## Usage
 
 ```ts
-import type { TTransform } from '@apptile/types';
+import type { TTransform } from '@tiledev/types';
 
 interface Props {
   xform: TTransform;

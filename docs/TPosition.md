@@ -22,7 +22,7 @@ export type TPosition = TPositionValue;
 ## Usage
 
 ```ts
-import type { TPosition } from '@apptile/types';
+import type { TPosition } from '@tiledev/types';
 
 interface Props {
   position: TPosition;

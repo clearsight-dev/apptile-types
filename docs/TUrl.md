@@ -10,7 +10,7 @@ Absolute URL — displayed as monospaced text in the inspector.
 ## Usage
 
 ```ts
-import type { TUrl } from '@apptile/types';
+import type { TUrl } from '@tiledev/types';
 
 interface Props {
   learnMore: TUrl;

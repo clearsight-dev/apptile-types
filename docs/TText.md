@@ -10,7 +10,7 @@ Free-form single-line text.
 ## Usage
 
 ```ts
-import type { TText } from '@apptile/types';
+import type { TText } from '@tiledev/types';
 
 interface Props {
   headline: TText;

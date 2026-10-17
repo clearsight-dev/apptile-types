@@ -1,5 +1,5 @@
 /**
- * @apptile/types
+ * @tiledev/types
  * ---------------------------------------------------------------------------
  * Type aliases a tile author uses to declare which of their component's
  * props should be exposed to the Live Layer inspector. Each `T*` type
@@ -14,7 +14,7 @@
  * input vs. colour picker) + a schema entry for the placed instance.
  *
  * Example:
- *   import type { TText, TImage, TColor } from '@apptile/types';
+ *   import type { TText, TImage, TColor } from '@tiledev/types';
  *   interface Props {
  *     title: TText;
  *     hero:  TImage;
@@ -35,7 +35,6 @@ export type TImage             = string;  // asset URI
 export type TUrl               = string;  // absolute URL
 export type TDeeplink          = string;  // scheme://…
 export type TAspectRatio       = string;  // e.g. '16:9', '1:1'
-export type TShopifyCollection = string;  // collection handle
 
 // ─── Format-constrained text (email / phone / postal address) ────────────
 //
@@ -159,3 +158,54 @@ export interface TPositionValue {
   left?: number | string;
 }
 export type TPosition = TPositionValue;
+
+// ─── Shopify content: one record, or its handle ──────────────────────────
+//
+// The editor's pickers come in pairs (tile-web-v2-shopify `T_TYPE_MAP`):
+// `T<Thing>Handle` stores the handle a screen loads the thing with;
+// `T<Thing>` stores the record, enough to draw a card without a request.
+// Until 0.2.0 `TShopifyCollection` was the handle: a prop that holds a
+// handle is `TShopifyCollectionHandle`.
+
+/** What a Shopify picker stores when it keeps the record. */
+export interface TShopifyResource {
+  id: string;
+  handle: string;
+  title: string;
+  image?: string | null;
+}
+
+export type TShopifyCollectionHandle = string;
+export type TShopifyCollection       = TShopifyResource;
+export type TShopifyProductHandle    = string;
+export type TShopifyProduct          = TShopifyResource;
+export type TShopifyBlogHandle       = string;
+export type TShopifyBlog             = TShopifyResource;
+
+// ─── Shopify lists: products and collections the PM picks, in order ──────
+//
+// One control (`ShopifyResourceListPicker`) behind three aliases; they
+// differ only in what the PM can add. Each item says what it is.
+
+export interface TShopifyResourceListItem extends TShopifyResource {
+  type: 'product' | 'collection';
+}
+/** Products and collections, mixed (the picker's two tabs). */
+export type TShopifyResourceList   = readonly TShopifyResourceListItem[];
+/** Products only. */
+export type TShopifyProductList    = readonly (TShopifyResourceListItem & { type: 'product' })[];
+/** Collections only. */
+export type TShopifyCollectionList = readonly (TShopifyResourceListItem & { type: 'collection' })[];
+
+// ─── More editor controls ────────────────────────────────────────────────
+export type TIcon            = string;  // icon id, chosen from a searchable grid
+export type TDateTime        = string;  // local time, `YYYY-MM-DDTHH:mm`
+export type TNavigation      = string;  // a screen, a route, or a link
+export type TScreen          = string;  // one of the app's screens, by name
+export type TVideo           = string;  // Bunny Stream video guid (not a URL)
+export type TVideoCollection = string;  // shoppable-feed video collection id
+
+// ─── List editor — the same repeater as TList ────────────────────────────
+// A separate name so a tile can say "a list the PM authors" rather than
+// "some array".
+export type TListEditor<T> = readonly T[];

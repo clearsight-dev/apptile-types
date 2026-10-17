@@ -24,7 +24,7 @@ export type TSpacing = TSpacingValue;
 ## Usage
 
 ```ts
-import type { TSpacing } from '@apptile/types';
+import type { TSpacing } from '@tiledev/types';
 
 interface Props {
   spacing: TSpacing;

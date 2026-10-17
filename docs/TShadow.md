@@ -23,7 +23,7 @@ export type TShadow = TShadowValue;
 ## Usage
 
 ```ts
-import type { TShadow } from '@apptile/types';
+import type { TShadow } from '@tiledev/types';
 
 interface Props {
   shadow: TShadow;

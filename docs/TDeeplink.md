@@ -10,7 +10,7 @@ Deep-link URI — `scheme://path` targeting a route inside your app.
 ## Usage
 
 ```ts
-import type { TDeeplink } from '@apptile/types';
+import type { TDeeplink } from '@tiledev/types';
 
 interface Props {
   onTapRoute: TDeeplink;
