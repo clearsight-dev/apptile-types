@@ -92,6 +92,15 @@ LL field it maps to, the inspector renderer used, and a usage example.
 - [TFlexAlign](docs/TFlexAlign.md)      — single-axis alignment token
 - [TPosition](docs/TPosition.md)        — absolute-position insets
 
+### Shopify (added 2026-10)
+
+- [TShopifyProduct / TShopifyBlog / …Handle](docs/TShopifyResource.md) — one store record, or its handle
+- [TShopifyResourceList](docs/TShopifyResourceList.md) — ordered products and/or collections (also `TShopifyProductList`, `TShopifyCollectionList`)
+
+### Content binding (added 2026-10)
+
+- [TIcon / TDateTime / TNavigation / TScreen / TVideo / TVideoCollection / TListEditor](docs/content-binding.md)
+
 ---
 
 ## Notes on the wire path

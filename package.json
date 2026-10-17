@@ -1,6 +1,6 @@
 {
   "name": "@apptile/types",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "TypeScript types for Live Layer prop declarations. Each T* alias equates to exactly the value the matching Live Layer control emits — TypeScript sees plain primitives / objects at runtime, no phantom brands. The editor's auto-wire detects props by the type identifier used at the declaration site.",
   "license": "MIT",
   "private": false,

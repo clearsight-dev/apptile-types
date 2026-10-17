@@ -159,3 +159,48 @@ export interface TPositionValue {
   left?: number | string;
 }
 export type TPosition = TPositionValue;
+
+// ─── Shopify records ─────────────────────────────────────────────────────
+//
+// Each entity comes as a pair: `T<Entity>Handle` is the bare handle a
+// runtime fetches with; `T<Entity>` is the resolved record, so a tile can
+// render a card without a second round-trip. Both open the same store
+// picker in the inspector.
+//
+// (`TShopifyCollection` above predates this pairing and is still typed as
+// the handle string.)
+export interface TShopifyResource {
+  id: string;      // Storefront GID, e.g. 'gid://shopify/Product/123'
+  handle: string;
+  title: string;
+  image?: string | null;
+}
+export type TShopifyCollectionHandle = string;
+export type TShopifyProductHandle    = string;
+export type TShopifyProduct          = TShopifyResource;
+export type TShopifyBlogHandle       = string;
+export type TShopifyBlog             = TShopifyResource;
+
+// ─── Shopify lists — ordered products and/or collections ─────────────────
+//
+// The inspector's Products/Collections list picker. Every item carries its
+// `type` so a mixed list can route each one; the Product/Collection-only
+// aliases restrict what the picker offers, not the item shape.
+export interface TShopifyResourceListItem extends TShopifyResource {
+  type: 'product' | 'collection';
+}
+export type TShopifyResourceList   = TShopifyResourceListItem[];
+export type TShopifyProductList    = TShopifyResourceListItem[];
+export type TShopifyCollectionList = TShopifyResourceListItem[];
+
+// ─── Content-binding controls ────────────────────────────────────────────
+export type TIcon            = string;  // icon id from the searchable grid
+export type TDateTime        = string;  // local 'YYYY-MM-DDTHH:mm'
+export type TNavigation      = string;  // a screen, a route, or a raw link
+export type TScreen          = string;  // one of the app's screens, by name
+export type TVideo           = string;  // Bunny Stream video guid — not a URL
+export type TVideoCollection = string;  // shoppable-feed video collection id
+
+// Same repeater as `TList`; the distinct alias says "an authored list of
+// records" rather than "some array".
+export type TListEditor<T = unknown> = readonly T[];
