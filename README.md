@@ -111,6 +111,7 @@ the thing with; `T<Thing>` keeps the record `{ id, handle, title, image }`.
 - [TIcon](docs/TIcon.md)                — icon from a searchable grid
 - [TDateTime](docs/TDateTime.md)        — local `YYYY-MM-DDTHH:mm`
 - [TNavigation](docs/TNavigation.md)    — a screen, a route, or a link
+- [TLink](docs/TLink.md)                — where a tap goes: one collection, product, page or screen
 - [TScreen](docs/TScreen.md)            — one of the app's screens
 - [TVideo](docs/TVideo.md)              — Bunny Stream video guid
 - [TVideoCollection](docs/TVideoCollection.md) — shoppable-feed video collection id

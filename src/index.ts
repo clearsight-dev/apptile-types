@@ -201,6 +201,16 @@ export type TShopifyCollectionList = readonly (TShopifyResourceListItem & { type
 export type TIcon            = string;  // icon id, chosen from a searchable grid
 export type TDateTime        = string;  // local time, `YYYY-MM-DDTHH:mm`
 export type TNavigation      = string;  // a screen, a route, or a link
+/**
+ * Where a tap goes, as one destination (the dashboard's `link` field, "Opens"): a collection, a product,
+ * a page or one of the app's screens. Unset is no tap; so is an empty handle, url or screen (the field
+ * writes the kind before its destination is picked).
+ */
+export type TLink =
+  | { type: 'collection'; handle: string }
+  | { type: 'product'; handle: string }
+  | { type: 'page'; url: string }
+  | { type: 'screen'; screen: string };
 export type TScreen          = string;  // one of the app's screens, by name
 export type TVideo           = string;  // Bunny Stream video guid (not a URL)
 export type TVideoCollection = string;  // shoppable-feed video collection id
